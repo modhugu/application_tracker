@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobTracker | Professional Application Manager</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Background Elements -->
+        <div class="bg-gradient-mesh"></div>
+        <div class="bg-particles"></div>
+
+        <!-- Main Layout -->
+        <nav class="glass-nav">
+            <div class="nav-content">
+                <div class="logo">
+                    <i data-lucide="briefcase"></i>
+                    <span>JobTracker</span>
+                </div>
+                <div class="nav-actions">
+                    <button id="btn-settings" class="btn-secondary" title="Settings">
+                        <i data-lucide="settings"></i>
+                    </button>
+                    <button id="btn-export" class="btn-secondary" title="Export Data">
+                        <i data-lucide="download"></i>
+                        <span>Export</span>
+                    </button>
+                    <button id="btn-import" class="btn-secondary" title="Import Data">
+                        <i data-lucide="upload"></i>
+                        <span>Import</span>
+                    </button>
+                    <input type="file" id="file-import" accept=".json" hidden>
+                    <button id="btn-add-job" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        <span>New Application</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="dashboard-container">
+            <header class="dashboard-header">
+                <div class="header-text">
+                    <h1>Your Applications</h1>
+                    <div class="header-sub">
+                        <p id="stats-text">Tracking 0 active opportunities</p>
+                        <span id="sync-status" class="sync-badge hidden">
+                            <i data-lucide="cloud"></i> <span id="sync-msg">Syncing...</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="search-bar">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="search-input" placeholder="Search by company or role...">
+                </div>
+            </header>
+
+            <div id="job-board" class="job-grid">
+                <!-- Job Cards will be injected here -->
+            </div>
+        </main>
+
+        <!-- Job Modal -->
+        <div id="job-modal" class="modal-overlay hidden">
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h2 id="modal-title">Add New Application</h2>
+                    <button id="btn-close-modal" class="btn-icon"><i data-lucide="x"></i></button>
+                </div>
+                <form id="job-form">
+                    <input type="hidden" id="job-id">
+
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" required placeholder="e.g. Google">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role / Position</label>
+                        <input type="text" id="role" required placeholder="e.g. Frontend Engineer">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Date Applied</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job_code">Job ID (Optional)</label>
+                            <input type="text" id="job_code" placeholder="e.g. REQ-12345">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">Job Link</label>
+                        <input type="url" id="url" placeholder="https://careers..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="Applied">Applied</option>
+                            <option value="Interviewing">Interviewing</option>
+                            <option value="Offer">Offer</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="btn-cancel" class="btn-text">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h2>Cloud Sync Settings (GitHub)</h2>
+                    <button id="btn-close-settings" class="btn-icon"><i data-lucide="x"></i></button>
+                </div>
+                <form id="settings-form">
+                    <div class="alert-box">
+                        <i data-lucide="alert-triangle"></i>
+                        <p>Your Personal Access Token is saved only in your browser. Do not use on public computers.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gh-token">Personal Access Token (PAT)</label>
+                        <input type="password" id="gh-token" placeholder="ghp_..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gh-owner">GitHub Username</label>
+                        <input type="text" id="gh-owner" placeholder="e.g. johndoe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gh-repo">Repository Name</label>
+                        <input type="text" id="gh-repo" placeholder="e.g. job-tracker-data" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gh-path">File Path (Optional)</label>
+                        <input type="text" id="gh-path" placeholder="jobs.json" value="jobs.json">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="btn-cancel-settings" class="btn-text">Cancel</button>
+                        <button type="submit" class="btn-primary">Connect & Sync</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Logic (Sequential Load for No-Server Support) -->
+    <script src="js/store.js"></script>
+    <script src="js/components/JobCard.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
