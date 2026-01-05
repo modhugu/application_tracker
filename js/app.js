@@ -146,6 +146,9 @@ function closeSettings() {
     settingsModal.classList.add('hidden');
 }
 
+// Settings Handling functions
+// ... (previous code)
+
 settingsForm.addEventListener('submit', (e) => {
     e.preventDefault();
     store.saveSettings({
@@ -154,7 +157,25 @@ settingsForm.addEventListener('submit', (e) => {
         repo: document.getElementById('gh-repo').value,
         path: document.getElementById('gh-path').value
     });
-    closeSettings();
+    // Trigger sync and give feedback
+    store.syncWithGitHub().then(result => {
+        if (result && result.success) alert('Connected & Synced Successfully!');
+        else alert('Connection Failed: ' + (result ? result.error : 'Unknown Error'));
+        closeSettings();
+    });
+});
+
+document.getElementById('btn-sync-now').addEventListener('click', () => {
+    // Save current values first temporarily to state without closing
+    store.settings.token = document.getElementById('gh-token').value;
+    store.settings.owner = document.getElementById('gh-owner').value;
+    store.settings.repo = document.getElementById('gh-repo').value;
+    store.settings.path = document.getElementById('gh-path').value;
+
+    store.syncWithGitHub().then(result => {
+        if (result && result.success) alert('Sync Successful!');
+        else alert('Sync Failed: ' + (result ? result.error : 'Check credentials'));
+    });
 });
 
 // -------------------------------------------------------------

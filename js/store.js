@@ -77,7 +77,12 @@ class Store {
     // --- GitHub Sync Logic ---
 
     async syncWithGitHub() {
-        if (!this.settings.token || this.isSyncing) return;
+        if (!this.settings.token) {
+            return { success: false, error: "GitHub token not set." };
+        }
+        if (this.isSyncing) {
+            return { success: false, error: "Sync already in progress." };
+        }
 
         this.isSyncing = true;
         this.notifySync("Syncing...");
@@ -107,9 +112,11 @@ class Store {
             }
 
             this.notifySync("Synced", "success");
+            return { success: true };
         } catch (error) {
             console.error("Sync Error:", error);
             this.notifySync("Sync Failed", "error");
+            return { success: false, error: error.message };
         } finally {
             this.isSyncing = false;
         }
