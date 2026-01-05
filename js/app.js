@@ -5,8 +5,6 @@
 const jobBoard = document.getElementById('job-board');
 const searchInput = document.getElementById('search-input');
 const statsText = document.getElementById('stats-text');
-const syncStatus = document.getElementById('sync-status');
-const syncMsg = document.getElementById('sync-msg');
 
 // Job Modal
 const modal = document.getElementById('job-modal');
@@ -15,13 +13,6 @@ const btnAddJob = document.getElementById('btn-add-job');
 const btnCloseModal = document.getElementById('btn-close-modal');
 const btnCancel = document.getElementById('btn-cancel');
 const modalTitle = document.getElementById('modal-title');
-
-// Settings Modal
-const settingsModal = document.getElementById('settings-modal');
-const btnSettings = document.getElementById('btn-settings');
-const btnCloseSettings = document.getElementById('btn-close-settings');
-const btnCancelSettings = document.getElementById('btn-cancel-settings');
-const settingsForm = document.getElementById('settings-form');
 
 // Import/Export
 const btnExport = document.getElementById('btn-export');
@@ -59,26 +50,6 @@ function render() {
     }
 
     attachCardListeners();
-}
-
-function updateSyncUI(status, type) {
-    syncStatus.classList.remove('hidden');
-    syncMsg.textContent = status;
-
-    // Remove old classes
-    syncStatus.classList.remove('sync-success', 'sync-error', 'sync-info');
-
-    // Add new class
-    if (type === 'success') syncStatus.classList.add('sync-success');
-    else if (type === 'error') syncStatus.classList.add('sync-error');
-    else syncStatus.classList.add('sync-info');
-
-    // Hide after 3s if success
-    if (type === 'success') {
-        setTimeout(() => {
-            syncStatus.classList.add('hidden');
-        }, 3000);
-    }
 }
 
 function attachCardListeners() {
@@ -146,38 +117,6 @@ function closeSettings() {
     settingsModal.classList.add('hidden');
 }
 
-// Settings Handling functions
-// ... (previous code)
-
-settingsForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    store.saveSettings({
-        token: document.getElementById('gh-token').value,
-        owner: document.getElementById('gh-owner').value,
-        repo: document.getElementById('gh-repo').value,
-        path: document.getElementById('gh-path').value
-    });
-    // Trigger sync and give feedback
-    store.syncWithGitHub().then(result => {
-        if (result && result.success) alert('Connected & Synced Successfully!');
-        else alert('Connection Failed: ' + (result ? result.error : 'Unknown Error'));
-        closeSettings();
-    });
-});
-
-document.getElementById('btn-sync-now').addEventListener('click', () => {
-    // Save current values first temporarily to state without closing
-    store.settings.token = document.getElementById('gh-token').value;
-    store.settings.owner = document.getElementById('gh-owner').value;
-    store.settings.repo = document.getElementById('gh-repo').value;
-    store.settings.path = document.getElementById('gh-path').value;
-
-    store.syncWithGitHub().then(result => {
-        if (result && result.success) alert('Sync Successful!');
-        else alert('Sync Failed: ' + (result ? result.error : 'Check credentials'));
-    });
-});
-
 // -------------------------------------------------------------
 // Event Listeners
 // -------------------------------------------------------------
@@ -212,14 +151,11 @@ btnCloseModal.addEventListener('click', closeModal);
 btnCancel.addEventListener('click', closeModal);
 
 // Settings Controls
-btnSettings.addEventListener('click', openSettings);
-btnCloseSettings.addEventListener('click', closeSettings);
-btnCancelSettings.addEventListener('click', closeSettings);
+// (Settings controls removed as per instruction)
 
 // Close modals on outside click
 window.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
-    if (e.target === settingsModal) closeSettings();
 });
 
 // Import/Export
@@ -237,7 +173,6 @@ fileImport.addEventListener('change', (e) => {
 // -------------------------------------------------------------
 
 store.subscribe(render);
-store.subscribeSync(updateSyncUI);
 
 render(); // Initial Render
 if (window.lucide) window.lucide.createIcons();

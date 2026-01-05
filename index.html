@@ -34,9 +34,6 @@
                     <span>JobTracker</span>
                 </div>
                 <div class="nav-actions">
-                    <button id="btn-settings" class="btn-secondary" title="Settings">
-                        <i data-lucide="settings"></i>
-                    </button>
                     <button id="btn-export" class="btn-secondary" title="Export Data">
                         <i data-lucide="download"></i>
                         <span>Export</span>
@@ -60,9 +57,6 @@
                     <h1>Your Applications</h1>
                     <div class="header-sub">
                         <p id="stats-text">Tracking 0 active opportunities</p>
-                        <span id="sync-status" class="sync-badge hidden">
-                            <i data-lucide="cloud"></i> <span id="sync-msg">Syncing...</span>
-                        </span>
                     </div>
                 </div>
                 <div class="search-bar">
@@ -130,49 +124,6 @@
             </div>
         </div>
 
-        <!-- Settings Modal -->
-        <div id="settings-modal" class="modal-overlay hidden">
-            <div class="modal-content glass-panel">
-                <div class="modal-header">
-                    <h2>Cloud Sync Settings (GitHub)</h2>
-                    <button id="btn-close-settings" class="btn-icon"><i data-lucide="x"></i></button>
-                </div>
-                <form id="settings-form">
-                    <div class="alert-box">
-                        <i data-lucide="alert-triangle"></i>
-                        <p>Your Personal Access Token is saved only in your browser. Do not use on public computers.</p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gh-token">Personal Access Token (PAT)</label>
-                        <input type="password" id="gh-token" placeholder="ghp_..." required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gh-owner">GitHub Username</label>
-                        <input type="text" id="gh-owner" placeholder="e.g. johndoe" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gh-repo">Repository Name</label>
-                        <input type="text" id="gh-repo" placeholder="e.g. job-tracker-data" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gh-path">File Path (Optional)</label>
-                        <input type="text" id="gh-path" placeholder="jobs.json" value="jobs.json">
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" id="btn-sync-now" class="btn-secondary" title="Force Sync with Cloud">
-                            <i data-lucide="refresh-cw"></i> Sync Now
-                        </button>
-                        <button type="button" id="btn-cancel-settings" class="btn-text">Cancel</button>
-                        <button type="submit" class="btn-primary">Connect & Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 
     <!-- App Logic (Sequential Load for No-Server Support) -->
